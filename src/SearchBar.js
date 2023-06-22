@@ -73,7 +73,7 @@ export default function SearchBar({setRecords, setDataState}){
             </TextField>
           </Grid>
           <Grid item md={8} sm={10}>
-            <TextField required onChange={handleChange} onKeyPress={handleKeyPress} value={searchQuery} label="Filter...Press Enter to filter" fullWidth/>
+            <TextField required fullWidth onChange={handleChange} onKeyPress={handleKeyPress} value={searchQuery} label="Filter...Press Enter to filter" />
           </Grid>
           <Grid item md={2} sm={12} alignItems='center'>
             <Button variant="contained" startIcon={<Icon>add</Icon>} onClick={()=>{setDataState('newrecord');}}>
