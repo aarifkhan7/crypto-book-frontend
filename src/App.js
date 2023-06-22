@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
+
 function App() {
   const [dataState, setDataState] = useState('complete');
   const [records, setRecords] = useState(null);
@@ -42,6 +43,18 @@ function App() {
     // console.log("delete request for "+objid);
   }
 
+  async function reloadData(){
+    let data = await fetch(baseurl + '/records');
+    if(data.status === 200){
+      data = await data.json();
+      setRecords(data);
+      setDataState('complete');
+    }else if(data.status === 500){
+      setDataState('error');
+    }
+    return true;
+  }
+
   return (
     <>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -55,7 +68,7 @@ function App() {
         </Container>
       )}
       {dataState === 'complete' && records != null && (
-        <RecordList records={records} deleteRecordFromList={deleteRecordFromList} />
+        <RecordList reloadData={reloadData} records={records} deleteRecordFromList={deleteRecordFromList} />
       )}
       {dataState === 'error' && (
         <ErrorPage></ErrorPage>

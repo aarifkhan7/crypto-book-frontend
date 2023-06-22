@@ -2,7 +2,7 @@ import Record from './Record';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
-export default function RecordList({records, deleteRecordFromList}){
+export default function RecordList({records, deleteRecordFromList, reloadData}){
     // var records = [
     //     {
     //       id: 0,
@@ -34,7 +34,7 @@ export default function RecordList({records, deleteRecordFromList}){
     
     const recordsList = records.map((data) => 
         <Grid item xs={12} sm={3}>
-            <Record _id={data._id} name={data.name} address={data.address} coinName={data.coinName} deleteRecordFromList={deleteRecordFromList}></Record>
+            <Record reloadData={reloadData} _id={data._id} name={data.name} address={data.address} coinName={data.coinName} deleteRecordFromList={deleteRecordFromList}></Record>
         </Grid>
     );
     
