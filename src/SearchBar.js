@@ -56,7 +56,7 @@ export default function SearchBar({setRecords, setDataState}){
     return (
       <Container>
         <Grid container spacing={2} my={2}>
-          <Grid item md={2}>
+          <Grid item md={2} sm={2}>
             <TextField select value={searchAttr} onChange={handleAttrChange} fullWidth defaultValue="All">
               <MenuItem key='all' value='All'>
                 All
@@ -72,10 +72,10 @@ export default function SearchBar({setRecords, setDataState}){
               </MenuItem>
             </TextField>
           </Grid>
-          <Grid item md={8}>
+          <Grid item md={8} sm={10}>
             <TextField required onChange={handleChange} onKeyPress={handleKeyPress} value={searchQuery} label="Filter...Press Enter to filter" fullWidth/>
           </Grid>
-          <Grid item md={2} alignItems='center'>
+          <Grid item md={2} sm={12} alignItems='center'>
             <Button variant="contained" startIcon={<Icon>add</Icon>} onClick={()=>{setDataState('newrecord');}}>
               New Address
             </Button>
