@@ -3,34 +3,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
 export default function RecordList({records, deleteRecordFromList, reloadData}){
-    // var records = [
-    //     {
-    //       id: 0,
-    //       name: "Aarif Khan",
-    //       address: "0x1234",
-    //       coinName: "Bitcoin"
-    //     },
-    //     {
-    //       id: 1,
-    //       name: "Abhishek Chauhan",
-    //       address: "0x5678",
-    //       coinName: "Ethereum"
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "Adish Chauhan",
-    //       address: "0x9801",
-    //       coinName: "ETH"
-    //     },
-    //     {
-    //       id: 3,
-    //       name: "Sukha Devi",
-    //       address: "0x2345",
-    //       coinName: "Tether"
-    //     }
-    //   ];
-      
-      // records = records.filter(data => (data.coinName === "Ethereum"));
+    
     
     const recordsList = records.map((data) => 
         <Grid item xs={12} sm={3}>

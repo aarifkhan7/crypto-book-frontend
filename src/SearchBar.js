@@ -1,7 +1,7 @@
 import { Button, Container, Icon, Grid, TextField, MenuItem } from "@mui/material";
 import { useState } from "react";
 
-let baseurl = "https://crypto-book-server.onrender.com";
+let baseurl = process.env.BASEURL;
 
 export default function SearchBar({setRecords, setDataState}){
     const [searchQuery, setSearchQuery] = useState('');    

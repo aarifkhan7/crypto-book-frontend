@@ -6,7 +6,7 @@ import ErrorPage from "./ErrorPage";
 import NewRecordForm from "./NewRecordForm";
 import { useState, useEffect } from "react";
 
-let baseurl = "https://crypto-book-server.onrender.com";
+let baseurl = process.env.BASEURL;
 
 
 function App() {
