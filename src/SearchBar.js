@@ -1,7 +1,7 @@
 import { Button, Container, Icon, Grid, TextField, MenuItem } from "@mui/material";
 import { useState } from "react";
 
-let baseurl = process.env.BASEURL;
+let baseurl = "https://crypto-book-server.onrender.com";
 
 export default function SearchBar({setRecords, setDataState}){
     const [searchQuery, setSearchQuery] = useState('');    
@@ -19,7 +19,10 @@ export default function SearchBar({setRecords, setDataState}){
         if(e.key === 'Enter'){
           if(searchQuery === ''){
             setDataState('loading');
-            fetch(`${baseurl}/records/`).then(res => res.json()).then(data => {
+            fetch(`${baseurl}/records/`, {
+              method: "GET",
+              credentials: "include"
+            }).then(res => res.json()).then(data => {
               setRecords(data);
               setDataState('complete');
             });
@@ -45,7 +48,10 @@ export default function SearchBar({setRecords, setDataState}){
             endpoint = `${baseurl}/records/all/${searchQuery}`;
           }
           setDataState('loading');
-          fetch(endpoint).then(res => res.json()).then(data => {
+          fetch(endpoint, {
+            method: "GET",
+            credentials: "include"
+          }).then(res => res.json()).then(data => {
             // console.log(data);
             setRecords(data);
             setDataState('complete');

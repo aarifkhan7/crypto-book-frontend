@@ -1,83 +1,109 @@
-import {CircularProgress, Container} from "@mui/material";
-import RecordList from "./RecordList";
-import SearchBar from "./SearchBar";
-import Header from "./Header";
-import ErrorPage from "./ErrorPage";
-import NewRecordForm from "./NewRecordForm";
+import Dashboard from "./Dashboard";
+import Signup from "./Signup";
+import Login from "./Login";
+import Logout from "./Logout";
+
 import { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 
-let baseurl = process.env.BASEURL;
-
+let baseurl = "https://crypto-book-server.onrender.com";
 
 function App() {
-  const [dataState, setDataState] = useState('complete');
-  const [records, setRecords] = useState(null);
 
-  useEffect(() => {
-    async function fetchData () {
-      console.log(baseurl);
-      let data = await fetch(baseurl + '/records');
-      if(data.status === 200){
-        data = await data.json();
-        setRecords(data);
-        setDataState('complete');
-        return () => {};
-      }else if(data.status === 500){
-        setDataState('error');
+  // get auth status
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  
+  useEffect(()=>{
+    fetch(baseurl + '/auth', {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      cache: "no-store"
+    }).then(res => res.json()).then(data => {
+      if(data.msg === true){
+        setLoggedIn(true);
+      }else{
+        setLoggedIn(false);
       }
-    };
-    fetchData();
+    }).catch((err)=>{
+      console.log(err);
+      setLoggedIn(false);
+    })
   }, []);
+  
+  let history = useHistory();
 
-  function addRecordInList(newobj){
-    setRecords([
-      ...records,
-      newobj
-    ]);
+  function checkLogin(data){
+    let requsername = data.username;
+    let reqpassword = data.password;
+
+    fetch(baseurl + '/auth', {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      cache: "no-store",
+      body: JSON.stringify({
+        username: requsername,
+        password: reqpassword
+      })
+    }).then(res => {
+      if(res.status === 200){
+        setLoggedIn(true);
+        history.push('/');
+        window.location.reload();
+      }else{
+        alert('Wrong credentials!');
+        setLoggedIn(false);
+      }
+    })
   }
 
-  function deleteRecordFromList(objid){
-    setRecords(
-      records.filter(a => a._id !== objid)
+  if(loggedIn === false){
+    return (
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login">
+              <Login checkLogin={checkLogin} />
+            </Route>
+            <Route path="/signup">
+              <Signup/>
+            </Route>
+            <Route path="/">
+              <Login checkLogin={checkLogin} />
+            </Route>
+          </Switch>
+        </BrowserRouter>
     );
-    // console.log("delete request for "+objid);
-  }
+  }else{
 
-  async function reloadData(){
-    let data = await fetch(baseurl + '/records');
-    if(data.status === 200){
-      data = await data.json();
-      setRecords(data);
-      setDataState('complete');
-    }else if(data.status === 500){
-      setDataState('error');
-    }
-    return true;
-  }
+    return (
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login">
+              <Login checkLogin={checkLogin}/>
+            </Route>
+            <Route path="/signup">
+              <Signup/>
+            </Route>
+            <Route path="/logout">
+              <Logout/>
+            </Route>
+            <Route path="/">
+              <Dashboard/>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+    );
 
-  return (
-    <>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-      <Header></Header>
-      <SearchBar setRecords={setRecords} setDataState={setDataState} />
-      {dataState === 'fetching' && (
-        <Container>
-          <center>
-            <CircularProgress></CircularProgress>
-          </center>
-        </Container>
-      )}
-      {dataState === 'complete' && records != null && (
-        <RecordList reloadData={reloadData} records={records} deleteRecordFromList={deleteRecordFromList} />
-      )}
-      {dataState === 'error' && (
-        <ErrorPage></ErrorPage>
-      )}
-      {dataState === 'newrecord' && (
-        <NewRecordForm setDataState={setDataState} addRecordInList={addRecordInList}></NewRecordForm>
-      )}
-    </>
-  )
+  }
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import { Container, TextField, Typography, MenuItem, Button, ButtonGroup, Icon, Box } from '@mui/material';
 import {useState} from 'react';
 
-let baseurl = process.env.BASEURL;
+let baseurl = "https://crypto-book-server.onrender.com";
 
 function SaveIcon(){
     return (
@@ -26,13 +26,14 @@ export default function NewRecordForm({setDataState, addRecordInList}){
     const [reqcoin, setReqCoin] = useState('Bitcoin');
 
     function handleSave(e){
-        if(reqname == '' || reqaddr == '' || reqcoin == ''){
+        if(reqname === '' || reqaddr === '' || reqcoin === ''){
             alert('Fill the required fields.');
             return;
         }
         setFormDisabled(true);
         fetch(baseurl + '/records/', {
             method: "POST",
+            credentials: "include",
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
@@ -44,7 +45,7 @@ export default function NewRecordForm({setDataState, addRecordInList}){
             }),
             cache: "no-store"
         }).then(res => res.json()).then(data => {
-            if(data.acknowledged == false){
+            if(data.acknowledged === false){
                 setDataState('error');
                 setFormDisabled(false);
                 return;

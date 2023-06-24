@@ -12,7 +12,7 @@ import Icon from '@mui/material/Icon';
 import Alert from '@mui/material/Alert';
 import { IconButton, TextField } from '@mui/material';
 
-let baseurl = process.env.BASEURL;
+let baseurl = "https://crypto-book-server.onrender.com";
 
 // export default function Record(props){
 //     return (
@@ -52,6 +52,7 @@ export default function Record(props) {
         setFormDisabled(true);
         fetch(baseurl + '/records', {
             method: "PUT",
+            credentials: "include",
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
@@ -87,6 +88,7 @@ export default function Record(props) {
         // console.log(id);
         fetch(baseurl + '/records', {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
