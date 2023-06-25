@@ -24,7 +24,9 @@ export default function SearchBar({setRecords, setDataState}){
             fetch(`${baseurl}/records`, {
               method: "GET",
               credentials: "include",
-              'x-access-token': token
+              headers: {
+                'x-access-token': token
+              }
             }).then(res => res.json()).then(data => {
               setRecords(data);
               setDataState('complete');
@@ -45,7 +47,9 @@ export default function SearchBar({setRecords, setDataState}){
           fetch(endpoint, {
             method: "GET",
             credentials: "include",
-            'x-access-token': token
+            headers: {
+              'x-access-token': token
+            }
           }).then(res => res.json()).then(data => {
             // console.log(data);
             setRecords(data);
