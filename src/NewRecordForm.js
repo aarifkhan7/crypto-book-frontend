@@ -1,5 +1,6 @@
 import { Container, TextField, Typography, MenuItem, Button, ButtonGroup, Icon, Box } from '@mui/material';
 import {useState} from 'react';
+import useToken from './useToken';
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
@@ -24,6 +25,7 @@ export default function NewRecordForm({setDataState, addRecordInList}){
     const [reqname, setReqName] = useState('');
     const [reqaddr, setReqAddr] = useState('');
     const [reqcoin, setReqCoin] = useState('Bitcoin');
+    const [token] = useToken();
 
     function handleSave(e){
         if(reqname === '' || reqaddr === '' || reqcoin === ''){
@@ -36,7 +38,8 @@ export default function NewRecordForm({setDataState, addRecordInList}){
             credentials: "include",
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': token
             },
             body:JSON.stringify({
                 name: reqname,

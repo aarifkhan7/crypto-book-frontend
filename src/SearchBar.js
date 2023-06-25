@@ -1,11 +1,13 @@
 import { Button, Container, Icon, Grid, TextField, MenuItem } from "@mui/material";
 import { useState } from "react";
+import useToken from "./useToken";
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
 export default function SearchBar({setRecords, setDataState}){
     const [searchQuery, setSearchQuery] = useState('');    
     const [searchAttr, setSearchAttr] = useState('All');
+    const [token] = useToken();
 
     function handleAttrChange(e){
       setSearchAttr(e.target.value);
@@ -21,7 +23,8 @@ export default function SearchBar({setRecords, setDataState}){
             setDataState('loading');
             fetch(`${baseurl}/records/`, {
               method: "GET",
-              credentials: "include"
+              credentials: "include",
+              'x-access-token': token
             }).then(res => res.json()).then(data => {
               setRecords(data);
               setDataState('complete');
@@ -50,7 +53,8 @@ export default function SearchBar({setRecords, setDataState}){
           setDataState('loading');
           fetch(endpoint, {
             method: "GET",
-            credentials: "include"
+            credentials: "include",
+            'x-access-token': token
           }).then(res => res.json()).then(data => {
             // console.log(data);
             setRecords(data);

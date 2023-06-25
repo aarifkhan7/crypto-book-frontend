@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Icon from '@mui/material/Icon';
 import Alert from '@mui/material/Alert';
 import { IconButton, TextField } from '@mui/material';
+import useToken from './useToken';
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
@@ -39,6 +40,7 @@ export default function Record(props) {
     const [addr, setAddr] = useState(props.address);
     const [coin, setCoin] = useState(props.coinName);
     const [formDisabled, setFormDisabled] = useState(false);
+    const [token] = useToken();
 
     function copy(){
         navigator.clipboard.writeText(addr);
@@ -55,7 +57,8 @@ export default function Record(props) {
             credentials: "include",
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': token
             },
             body:JSON.stringify({
                 _id: id,
@@ -91,7 +94,8 @@ export default function Record(props) {
             credentials: "include",
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': token
             },
             body: JSON.stringify({
                 _id: id

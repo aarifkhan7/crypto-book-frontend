@@ -5,19 +5,24 @@ import Header from "./Header";
 import ErrorPage from "./ErrorPage";
 import NewRecordForm from "./NewRecordForm";
 import { useState, useEffect } from "react";
+import useToken from "./useToken";
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
 function Dashboard() {
   const [dataState, setDataState] = useState('complete');
   const [records, setRecords] = useState(null);
+  const [ token ] = useToken();
 
   useEffect(() => {
     async function fetchData () {
       console.log(baseurl);
       let data = await fetch(baseurl + '/records', {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
+        headers: {
+          'x-access-token': token
+        }
       });
       if(data.status === 200){
         data = await data.json();
@@ -48,7 +53,10 @@ function Dashboard() {
   async function reloadData(){
     let data = await fetch(baseurl + '/records',{
       method: "GET",
-      credentials: "include"
+      credentials: "include",
+      headers:{
+        'x-access-token': token
+      }
     });
     if(data.status === 200){
       data = await data.json();
