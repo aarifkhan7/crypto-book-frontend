@@ -3,10 +3,10 @@ import Signup from "./Signup";
 import Login from "./Login";
 import Logout from "./Logout";
 
-import { useState, useEffect } from "react";
 import React from "react";
 import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import useToken from "./useToken";
+import MyAppBar from "./MyAppBar";
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
@@ -46,6 +46,10 @@ function App() {
     })
   }
 
+  function logOut(){
+    setToken(null);
+  }
+
   if(!token){
     return (
         <BrowserRouter>
@@ -65,6 +69,8 @@ function App() {
   }else{
 
     return (
+      <>
+        <MyAppBar logOut={logOut}></MyAppBar>
         <BrowserRouter>
           <Switch>
             <Route path="/login">
@@ -81,6 +87,7 @@ function App() {
             </Route>
           </Switch>
         </BrowserRouter>
+        </>
     );
 
   }
