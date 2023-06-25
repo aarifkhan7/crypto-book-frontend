@@ -6,37 +6,17 @@ import Logout from "./Logout";
 import { useState, useEffect } from "react";
 import React from "react";
 import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
+import useToken from "./useToken";
 
 let baseurl = "https://crypto-book-server.onrender.com";
 
 function App() {
 
   // get auth status
-
-  const [loggedIn, setLoggedIn] = useState(false);
-  
-  useEffect(()=>{
-    fetch(baseurl + '/auth', {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      cache: "no-store"
-    }).then(res => res.json()).then(data => {
-      if(data.msg === true){
-        setLoggedIn(true);
-      }else{
-        setLoggedIn(false);
-      }
-    }).catch((err)=>{
-      console.log(err);
-      setLoggedIn(false);
-    })
-  }, []);
-  
+  const { token, setToken } = useToken();
   let history = useHistory();
+
+  console.log(token);
 
   function checkLogin(data){
     let requsername = data.username;
@@ -54,19 +34,19 @@ function App() {
         username: requsername,
         password: reqpassword
       })
-    }).then(res => {
+    }).then(async (res) => {
       if(res.status === 200){
-        setLoggedIn(true);
+        let data = await res.json();
+        setToken(data.token);
         history.push('/');
         window.location.reload();
       }else{
         alert('Wrong credentials!');
-        setLoggedIn(false);
       }
     })
   }
 
-  if(loggedIn === false){
+  if(!token){
     return (
         <BrowserRouter>
           <Switch>
