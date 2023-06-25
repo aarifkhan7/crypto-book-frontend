@@ -21,7 +21,7 @@ export default function SearchBar({setRecords, setDataState}){
         if(e.key === 'Enter'){
           if(searchQuery === ''){
             setDataState('loading');
-            fetch(`${baseurl}/records/`, {
+            fetch(`${baseurl}/records`, {
               method: "GET",
               credentials: "include",
               'x-access-token': token
@@ -33,15 +33,6 @@ export default function SearchBar({setRecords, setDataState}){
           }
           let endpoint = null;
           if(searchAttr === 'Name'){
-            // let data = await fetch(`http://localhost:3100/records/name/${searchQuery}`);
-            // if(data.status === 200){
-            //   data = await data.json();
-            //   setRecords(data);
-            //   setDataState('complete');
-            //   return () => {};
-            // }else if(data.status === 500){
-            //   setDataState('error');
-            // }
             endpoint = `${baseurl}/records/name/${searchQuery}`;
           }else if(searchAttr === 'Address'){
             endpoint = `${baseurl}/records/address/${searchQuery}`;
