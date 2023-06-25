@@ -13,7 +13,7 @@ let baseurl = "https://crypto-book-server.onrender.com";
 function App() {
 
   // get auth status
-  const { token, setToken } = useToken();
+  const [ token, setToken ] = useToken();
   let history = useHistory();
 
   console.log(token);
